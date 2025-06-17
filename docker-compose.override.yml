@@ -1,0 +1,38 @@
+version: "3.6"
+services:
+  reverse-proxy:
+    command:
+      - --api.insecure=true
+      - --providers.docker
+      - --entryPoints.web.address=:80
+      - --providers.docker.exposedbydefault=false
+    
+  play:
+    environment:
+      # URLs sans port (port 80 standard)
+      ALLOWED_CORS_ORIGIN: "*"
+      VITE_URL: "http://front.workadventure.localhost"
+      PUSHER_URL: "http://play.workadventure.localhost"
+      FRONT_URL: "http://front.workadventure.localhost"
+      PUBLIC_MAP_STORAGE_URL: "http://map-storage.workadventure.localhost"
+      ICON_URL: "http://icon.workadventure.localhost"
+      UPLOADER_URL: "http://uploader.workadventure.localhost"
+      # Fix cookie issues
+      NODE_ENV: "development"
+      COOKIE_DOMAIN: ".workadventure.localhost"
+      SECURE_COOKIE: "false"
+      
+  back:
+    environment:
+      FRONT_URL: "http://front.workadventure.localhost"
+      PUSHER_URL: "http://play.workadventure.localhost"
+      UPLOADER_URL: "http://uploader.workadventure.localhost"
+      
+  map-storage:
+    environment:
+      FRONT_URL: "http://front.workadventure.localhost"
+      UPLOADER_URL: "http://uploader.workadventure.localhost"
+      
+  maps:
+    environment:
+      FRONT_URL: "http://play.workadventure.localhost"
